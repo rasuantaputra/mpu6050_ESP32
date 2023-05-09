@@ -72,19 +72,19 @@ void mpu6050_task()
 
     cmd = i2c_cmd_link_create();
 
-	ESP_ERROR_CHECK(i2c_master_start(cmd));
-	ESP_ERROR_CHECK(i2c_master_write_byte(cmd, (I2C_ADDRESS << 1) | I2C_MASTER_WRITE, 1));
+	i2c_master_start(cmd);
+	i2c_master_write_byte(cmd, (I2C_ADDRESS << 1) | I2C_MASTER_WRITE, 1);
     i2c_master_write_byte(cmd, MPU6050_ACCEL_XOUT_H, 1);
-    ESP_ERROR_CHECK(i2c_master_stop(cmd));
+    i2c_master_stop(cmd);
     i2c_master_cmd_begin(I2C_NUM_0, cmd, 1000/portTICK_PERIOD_MS);
     i2c_cmd_link_delete(cmd);
 
     cmd = i2c_cmd_link_create();
-    ESP_ERROR_CHECK(i2c_master_start(cmd));
-    ESP_ERROR_CHECK(i2c_master_write_byte(cmd, (I2C_ADDRESS << 1) | I2C_MASTER_WRITE, 1));
+    i2c_master_start(cmd);
+    i2c_master_write_byte(cmd, (I2C_ADDRESS << 1) | I2C_MASTER_WRITE, 1);
     i2c_master_write_byte(cmd, MPU6050_PWR_MGMT_1, 1);
     i2c_master_write_byte(cmd, 0, 1);
-    ESP_ERROR_CHECK(i2c_master_stop(cmd));
+    i2c_master_stop(cmd);
     i2c_master_cmd_begin(I2C_NUM_0, cmd, 1000/portTICK_PERIOD_MS);
     i2c_cmd_link_delete(cmd);
 }
@@ -102,27 +102,27 @@ void mpu605_read_data() // fungsi ini masih raw data, nantinya akan dimasukan se
 		// Tell the MPU6050 to position the internal register pointer to register
 		// MPU6050_ACCEL_XOUT_H.
         cmd = i2c_cmd_link_create();
-        ESP_ERROR_CHECK(i2c_master_start(cmd));
-        ESP_ERROR_CHECK(i2c_master_write_byte(cmd, (I2C_ADDRESS << 1) | I2C_MASTER_WRITE, 1));
-        ESP_ERROR_CHECK(i2c_master_write_byte(cmd, MPU6050_ACCEL_XOUT_H, 1));
-        ESP_ERROR_CHECK(i2c_master_stop(cmd));
-        ESP_ERROR_CHECK(i2c_master_cmd_begin(I2C_NUM_0, cmd, 1000/portTICK_PERIOD_MS));
+        i2c_master_start(cmd);
+        i2c_master_write_byte(cmd, (I2C_ADDRESS << 1) | I2C_MASTER_WRITE, 1);
+        i2c_master_write_byte(cmd, MPU6050_ACCEL_XOUT_H, 1);
+        i2c_master_stop(cmd);
+        i2c_master_cmd_begin(I2C_NUM_0, cmd, 1000/portTICK_PERIOD_MS);
         i2c_cmd_link_delete(cmd);
 
         cmd = i2c_cmd_link_create();
-        ESP_ERROR_CHECK(i2c_master_start(cmd));
-        ESP_ERROR_CHECK(i2c_master_write_byte(cmd, (I2C_ADDRESS << 1| I2C_MASTER_READ), 1));
+        i2c_master_start(cmd);
+        i2c_master_write_byte(cmd, (I2C_ADDRESS << 1| I2C_MASTER_READ), 1);
 
-        ESP_ERROR_CHECK(i2c_master_read_byte(cmd, data, 0));
-        ESP_ERROR_CHECK(i2c_master_read_byte(cmd, data + 1, 0));
-        ESP_ERROR_CHECK(i2c_master_read_byte(cmd, data + 2, 0));
-        ESP_ERROR_CHECK(i2c_master_read_byte(cmd, data + 3, 0));
-        ESP_ERROR_CHECK(i2c_master_read_byte(cmd, data + 4, 0));
-        ESP_ERROR_CHECK(i2c_master_read_byte(cmd, data + 5, 1));
+        i2c_master_read_byte(cmd, data, 0);
+        i2c_master_read_byte(cmd, data + 1, 0);
+        i2c_master_read_byte(cmd, data + 2, 0);
+        i2c_master_read_byte(cmd, data + 3, 0);
+        i2c_master_read_byte(cmd, data + 4, 0);
+        i2c_master_read_byte(cmd, data + 5, 1);
 
         //i2c_master_read(cmd, data, sizeof(data), 1); // malloc ?
-        ESP_ERROR_CHECK(i2c_master_stop(cmd));
-        ESP_ERROR_CHECK(i2c_master_cmd_begin(I2C_NUM_0, cmd, 1000/portTICK_PERIOD_MS));
+        i2c_master_stop(cmd);
+        i2c_master_cmd_begin(I2C_NUM_0, cmd, 1000/portTICK_PERIOD_MS);
         i2c_cmd_link_delete(cmd);
 
         x = (data[0] << 8) | data[1];
